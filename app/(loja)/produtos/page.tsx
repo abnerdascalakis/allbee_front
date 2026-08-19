@@ -1,8 +1,8 @@
 import { ProductCatalog } from '@/components/product/product-catalog'
-import { products } from '@/lib/data'
-import type { Category } from '@/lib/types'
+import { produtos } from '@/lib/data'
+import type { Categoria } from '@/lib/types'
 
-const validCategories: Category[] = [
+const categoriasValidas: Categoria[] = [
   'mel',
   'favo',
   'propolis',
@@ -16,9 +16,9 @@ export default async function ProdutosPage({
   searchParams: Promise<{ categoria?: string }>
 }) {
   const { categoria } = await searchParams
-  const initialCategory =
-    categoria && validCategories.includes(categoria as Category)
-      ? (categoria as Category)
+  const categoriaInicial =
+    categoria && categoriasValidas.includes(categoria as Categoria)
+      ? (categoria as Categoria)
       : 'todos'
 
   return (
@@ -34,7 +34,7 @@ export default async function ProdutosPage({
         </p>
       </header>
 
-      <ProductCatalog products={products} initialCategory={initialCategory} />
+      <ProductCatalog produtos={produtos} categoriaInicial={categoriaInicial} />
     </div>
   )
 }

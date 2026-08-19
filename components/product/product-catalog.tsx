@@ -5,51 +5,51 @@ import { Search } from 'lucide-react'
 import { ProductCard } from './product-card'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
-import { CATEGORY_LABELS, type Category, type Product } from '@/lib/types'
+import { ROTULOS_CATEGORIAS, type Categoria, type Produto } from '@/lib/types'
 
-type Filter = Category | 'todos'
+type Filtro = Categoria | 'todos'
 
-const filters: { key: Filter; label: string }[] = [
+const filtros: { key: Filtro; label: string }[] = [
   { key: 'todos', label: 'Todos' },
-  { key: 'mel', label: CATEGORY_LABELS.mel },
-  { key: 'favo', label: CATEGORY_LABELS.favo },
-  { key: 'propolis', label: CATEGORY_LABELS.propolis },
-  { key: 'geleia-real', label: CATEGORY_LABELS['geleia-real'] },
-  { key: 'velas', label: CATEGORY_LABELS.velas },
+  { key: 'mel', label: ROTULOS_CATEGORIAS.mel },
+  { key: 'favo', label: ROTULOS_CATEGORIAS.favo },
+  { key: 'propolis', label: ROTULOS_CATEGORIAS.propolis },
+  { key: 'geleia-real', label: ROTULOS_CATEGORIAS['geleia-real'] },
+  { key: 'velas', label: ROTULOS_CATEGORIAS.velas },
 ]
 
 export function ProductCatalog({
-  products,
-  initialCategory = 'todos',
+  produtos,
+  categoriaInicial = 'todos',
 }: {
-  products: Product[]
-  initialCategory?: Filter
+  produtos: Produto[]
+  categoriaInicial?: Filtro
 }) {
-  const [active, setActive] = useState<Filter>(initialCategory)
+  const [ativo, setAtivo] = useState<Filtro>(categoriaInicial)
   const [query, setQuery] = useState('')
 
-  const filtered = useMemo(() => {
-    return products.filter((p) => {
-      const matchCategory = active === 'todos' || p.category === active
-      const matchQuery =
+  const filtrados = useMemo(() => {
+    return produtos.filter((produto) => {
+      const correspondeCategoria = ativo === 'todos' || produto.categoria === ativo
+      const correspondeBusca =
         query.trim() === '' ||
-        p.name.toLowerCase().includes(query.toLowerCase()) ||
-        p.shortDescription.toLowerCase().includes(query.toLowerCase())
-      return matchCategory && matchQuery
+        produto.nome.toLowerCase().includes(query.toLowerCase()) ||
+        produto.descricaoCurta.toLowerCase().includes(query.toLowerCase())
+      return correspondeCategoria && correspondeBusca
     })
-  }, [products, active, query])
+  }, [produtos, ativo, query])
 
   return (
     <div>
       <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="flex flex-wrap gap-2">
-          {filters.map((f) => (
+          {filtros.map((f) => (
             <button
               key={f.key}
-              onClick={() => setActive(f.key)}
+              onClick={() => setAtivo(f.key)}
               className={cn(
                 'rounded-full border px-4 py-1.5 text-sm font-medium transition-colors',
-                active === f.key
+                ativo === f.key
                   ? 'border-primary bg-primary text-primary-foreground'
                   : 'border-border bg-card text-muted-foreground hover:text-foreground',
               )}
@@ -70,14 +70,14 @@ export function ProductCatalog({
         </div>
       </div>
 
-      {filtered.length === 0 ? (
+      {filtrados.length === 0 ? (
         <p className="py-16 text-center text-muted-foreground">
           Nenhum produto encontrado.
         </p>
       ) : (
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {filtered.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {filtrados.map((produto) => (
+            <ProductCard key={produto.id} produto={produto} />
           ))}
         </div>
       )}

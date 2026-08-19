@@ -5,8 +5,8 @@ import { Hero } from '@/components/home/hero'
 import { Reveal } from '@/components/motion/reveal'
 import { ProductCard } from '@/components/product/product-card'
 import { Button } from '@/components/ui/button'
-import { getFeaturedProducts } from '@/lib/data'
-import { CATEGORY_LABELS, type Category } from '@/lib/types'
+import { obterProdutosEmDestaque } from '@/lib/data'
+import { ROTULOS_CATEGORIAS, type Categoria } from '@/lib/types'
 
 const values = [
   {
@@ -31,16 +31,16 @@ const values = [
   },
 ]
 
-const categories: { key: Category; image: string }[] = [
-  { key: 'mel', image: '/images/produto-mel-silvestre.png' },
-  { key: 'favo', image: '/images/produto-favo.png' },
-  { key: 'propolis', image: '/images/produto-propolis.png' },
-  { key: 'geleia-real', image: '/images/produto-geleia-real.png' },
-  { key: 'velas', image: '/images/produto-vela-cera.png' },
+const categorias: { chave: Categoria; imagem: string }[] = [
+  { chave: 'mel', imagem: '/images/produto-mel-silvestre.png' },
+  { chave: 'favo', imagem: '/images/produto-favo.png' },
+  { chave: 'propolis', imagem: '/images/produto-propolis.png' },
+  { chave: 'geleia-real', imagem: '/images/produto-geleia-real.png' },
+  { chave: 'velas', imagem: '/images/produto-vela-cera.png' },
 ]
 
 export default function HomePage() {
-  const featured = getFeaturedProducts()
+  const produtosEmDestaque = obterProdutosEmDestaque()
 
   return (
     <>
@@ -86,9 +86,9 @@ export default function HomePage() {
           </Button>
         </Reveal>
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {featured.map((product, i) => (
-            <Reveal key={product.id} delay={i * 0.06}>
-              <ProductCard product={product} />
+          {produtosEmDestaque.map((produto, i) => (
+            <Reveal key={produto.id} delay={i * 0.06}>
+              <ProductCard produto={produto} />
             </Reveal>
           ))}
         </div>
@@ -102,22 +102,22 @@ export default function HomePage() {
           </h2>
         </Reveal>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
-          {categories.map((cat, i) => (
-            <Reveal key={cat.key} delay={i * 0.06}>
+          {categorias.map((categoria, i) => (
+            <Reveal key={categoria.chave} delay={i * 0.06}>
               <Link
-                href={`/produtos?categoria=${cat.key}`}
+                href={`/produtos?categoria=${categoria.chave}`}
                 className="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-2xl border"
               >
                 <Image
-                  src={cat.image || '/placeholder.svg'}
-                  alt={CATEGORY_LABELS[cat.key]}
+                  src={categoria.imagem || '/placeholder.svg'}
+                  alt={ROTULOS_CATEGORIAS[categoria.chave]}
                   fill
                   sizes="(max-width: 768px) 50vw, 20vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/85 to-transparent" />
                 <span className="relative p-4 font-serif text-lg font-semibold">
-                  {CATEGORY_LABELS[cat.key]}
+                  {ROTULOS_CATEGORIAS[categoria.chave]}
                 </span>
               </Link>
             </Reveal>
@@ -145,7 +145,7 @@ export default function HomePage() {
               Uma família dedicada às abelhas
             </h2>
             <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
-              Há mais de 20 anos cuidamos de colmeias na Serra da Mantiqueira,
+              Há 2 anos cuidamos de colmeias em Rôndonia,
               acreditando que um bom mel nasce do respeito à natureza. Cada pote
               carrega o trabalho paciente das abelhas e o cuidado de quem ama o
               que faz.

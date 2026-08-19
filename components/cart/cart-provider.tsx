@@ -7,74 +7,74 @@ import {
   useState,
   type ReactNode,
 } from 'react'
-import type { CartItem, Product } from '@/lib/types'
+import type { ItemCarrinho, Produto } from '@/lib/types'
 
 interface CartContextValue {
-  items: CartItem[]
-  addItem: (product: Product, quantity?: number) => void
-  removeItem: (productId: string) => void
-  updateQuantity: (productId: string, quantity: number) => void
-  clear: () => void
-  totalItems: number
-  totalPrice: number
+  itens: ItemCarrinho[]
+  adicionarItem: (produto: Produto, quantidade?: number) => void
+  removerItem: (produtoId: string) => void
+  atualizarQuantidade: (produtoId: string, quantidade: number) => void
+  limpar: () => void
+  totalItens: number
+  precoTotal: number
 }
 
 const CartContext = createContext<CartContextValue | null>(null)
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([])
+  const [itens, setItens] = useState<ItemCarrinho[]>([])
 
-  function addItem(product: Product, quantity = 1) {
-    setItems((prev) => {
-      const existing = prev.find((i) => i.product.id === product.id)
-      if (existing) {
-        return prev.map((i) =>
-          i.product.id === product.id
-            ? { ...i, quantity: Math.min(i.quantity + quantity, product.stock) }
-            : i,
+  function adicionarItem(produto: Produto, quantidade = 1) {
+    setItens((anteriores) => {
+      const existente = anteriores.find((item) => item.produto.id === produto.id)
+      if (existente) {
+        return anteriores.map((item) =>
+          item.produto.id === produto.id
+            ? { ...item, quantidade: Math.min(item.quantidade + quantidade, produto.estoque) }
+            : item,
         )
       }
-      return [...prev, { product, quantity: Math.min(quantity, product.stock) }]
+      return [...anteriores, { produto, quantidade: Math.min(quantidade, produto.estoque) }]
     })
   }
 
-  function removeItem(productId: string) {
-    setItems((prev) => prev.filter((i) => i.product.id !== productId))
+  function removerItem(produtoId: string) {
+    setItens((anteriores) => anteriores.filter((item) => item.produto.id !== produtoId))
   }
 
-  function updateQuantity(productId: string, quantity: number) {
-    setItems((prev) =>
-      prev
-        .map((i) =>
-          i.product.id === productId
-            ? { ...i, quantity: Math.max(0, Math.min(quantity, i.product.stock)) }
-            : i,
+  function atualizarQuantidade(produtoId: string, quantidade: number) {
+    setItens((anteriores) =>
+      anteriores
+        .map((item) =>
+          item.produto.id === produtoId
+            ? { ...item, quantidade: Math.max(0, Math.min(quantidade, item.produto.estoque)) }
+            : item,
         )
-        .filter((i) => i.quantity > 0),
+        .filter((item) => item.quantidade > 0),
     )
   }
 
-  function clear() {
-    setItems([])
+  function limpar() {
+    setItens([])
   }
 
-  const totalItems = useMemo(
-    () => items.reduce((sum, i) => sum + i.quantity, 0),
-    [items],
+  const totalItens = useMemo(
+    () => itens.reduce((soma, item) => soma + item.quantidade, 0),
+    [itens],
   )
-  const totalPrice = useMemo(
-    () => items.reduce((sum, i) => sum + i.quantity * i.product.price, 0),
-    [items],
+  const precoTotal = useMemo(
+    () => itens.reduce((soma, item) => soma + item.quantidade * item.produto.preco, 0),
+    [itens],
   )
 
   const value: CartContextValue = {
-    items,
-    addItem,
-    removeItem,
-    updateQuantity,
-    clear,
-    totalItems,
-    totalPrice,
+    itens,
+    adicionarItem,
+    removerItem,
+    atualizarQuantidade,
+    limpar,
+    totalItens,
+    precoTotal,
   }
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>

@@ -1,23 +1,23 @@
-export type Category = 'mel' | 'favo' | 'propolis' | 'geleia-real' | 'velas'
+export type Categoria = 'mel' | 'favo' | 'propolis' | 'geleia-real' | 'velas'
 
-export interface Product {
+export interface Produto {
   id: string
-  name: string
+  nome: string
   slug: string
-  shortDescription: string
-  price: number
-  stock: number
-  category: Category
-  image: string
-  featured?: boolean
+  descricaoCurta: string
+  preco: number
+  estoque: number
+  categoria: Categoria
+  imagem: string
+  destaque?: boolean
 }
 
-export interface CartItem {
-  product: Product
-  quantity: number
+export interface ItemCarrinho {
+  produto: Produto
+  quantidade: number
 }
 
-export const CATEGORY_LABELS: Record<Category, string> = {
+export const ROTULOS_CATEGORIAS: Record<Categoria, string> = {
   mel: 'Mel',
   favo: 'Favo',
   propolis: 'Própolis',

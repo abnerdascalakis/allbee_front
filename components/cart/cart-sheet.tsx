@@ -18,7 +18,7 @@ import { useCart } from './cart-provider'
 import { formatCurrency } from '@/lib/format'
 
 export function CartSheet() {
-  const { items, totalItems, totalPrice, updateQuantity, removeItem } =
+  const { itens, totalItens, precoTotal, atualizarQuantidade, removerItem } =
     useCart()
   const [open, setOpen] = useState(false)
 
@@ -29,13 +29,13 @@ export function CartSheet() {
           variant="ghost"
           size="icon"
           className="relative"
-          aria-label={`Abrir carrinho com ${totalItems} itens`}
+          aria-label={`Abrir carrinho com ${totalItens} itens`}
         />}
       >
         <ShoppingBag className="size-5" />
-        {totalItems > 0 && (
+        {totalItens > 0 && (
           <span className="absolute -right-1 -top-1 grid size-5 place-items-center rounded-full bg-primary text-[11px] font-bold text-primary-foreground">
-            {totalItems}
+            {totalItens}
           </span>
         )}
       </SheetTrigger>
@@ -44,7 +44,7 @@ export function CartSheet() {
           <SheetTitle className="font-serif text-xl">Seu carrinho</SheetTitle>
         </SheetHeader>
 
-        {items.length === 0 ? (
+        {itens.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-3 px-6 text-center">
             <ShoppingBag className="size-10 text-muted-foreground" />
             <p className="text-muted-foreground">
@@ -60,12 +60,12 @@ export function CartSheet() {
         ) : (
           <>
             <div className="flex-1 space-y-4 overflow-y-auto px-4 py-4">
-              {items.map((item) => (
-                <div key={item.product.id} className="flex gap-3">
+              {itens.map((item) => (
+                <div key={item.produto.id} className="flex gap-3">
                   <div className="relative size-20 shrink-0 overflow-hidden rounded-lg bg-secondary">
                     <Image
-                      src={item.product.image || '/placeholder.svg'}
-                      alt={item.product.name}
+                      src={item.produto.imagem || '/placeholder.svg'}
+                      alt={item.produto.nome}
                       fill
                       sizes="80px"
                       className="object-cover"
@@ -74,24 +74,24 @@ export function CartSheet() {
                   <div className="flex flex-1 flex-col">
                     <div className="flex justify-between gap-2">
                       <p className="text-sm font-semibold leading-tight">
-                        {item.product.name}
+                        {item.produto.nome}
                       </p>
                       <button
-                        onClick={() => removeItem(item.product.id)}
+                        onClick={() => removerItem(item.produto.id)}
                         className="text-muted-foreground transition-colors hover:text-destructive"
-                        aria-label={`Remover ${item.product.name}`}
+                        aria-label={`Remover ${item.produto.nome}`}
                       >
                         <Trash2 className="size-4" />
                       </button>
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      {formatCurrency(item.product.price)}
+                      {formatCurrency(item.produto.preco)}
                     </p>
                     <div className="mt-auto flex items-center gap-2">
                       <div className="flex items-center rounded-md border">
                         <button
                           onClick={() =>
-                            updateQuantity(item.product.id, item.quantity - 1)
+                            atualizarQuantidade(item.produto.id, item.quantidade - 1)
                           }
                           className="grid size-7 place-items-center text-muted-foreground hover:text-foreground"
                           aria-label="Diminuir quantidade"
@@ -99,21 +99,21 @@ export function CartSheet() {
                           <Minus className="size-3.5" />
                         </button>
                         <span className="w-8 text-center text-sm font-medium">
-                          {item.quantity}
+                          {item.quantidade}
                         </span>
                         <button
                           onClick={() =>
-                            updateQuantity(item.product.id, item.quantity + 1)
+                            atualizarQuantidade(item.produto.id, item.quantidade + 1)
                           }
                           className="grid size-7 place-items-center text-muted-foreground hover:text-foreground disabled:opacity-40"
-                          disabled={item.quantity >= item.product.stock}
+                          disabled={item.quantidade >= item.produto.estoque}
                           aria-label="Aumentar quantidade"
                         >
                           <Plus className="size-3.5" />
                         </button>
                       </div>
                       <span className="ml-auto text-sm font-semibold">
-                        {formatCurrency(item.product.price * item.quantity)}
+                        {formatCurrency(item.produto.preco * item.quantidade)}
                       </span>
                     </div>
                   </div>
@@ -126,7 +126,7 @@ export function CartSheet() {
               <div className="flex items-center justify-between text-base">
                 <span className="text-muted-foreground">Subtotal</span>
                 <span className="font-serif text-lg font-semibold">
-                  {formatCurrency(totalPrice)}
+                  {formatCurrency(precoTotal)}
                 </span>
               </div>
               <Button

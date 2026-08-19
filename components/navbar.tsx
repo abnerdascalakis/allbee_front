@@ -33,7 +33,7 @@ const links = [
 
 export function SiteHeader() {
   const pathname = usePathname()
-  const { user, logout } = useAuth()
+  const { usuario, sair } = useAuth()
   const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
@@ -60,7 +60,7 @@ export function SiteHeader() {
         <div className="flex items-center gap-1">
           <CartSheet />
 
-          {user ? (
+          {usuario ? (
             <DropdownMenu>
               <DropdownMenuTrigger
                 render={
@@ -71,19 +71,19 @@ export function SiteHeader() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuLabel className="flex flex-col">
-                  <span>{user.name}</span>
+                  <span>{usuario.nome}</span>
                   <span className="text-xs font-normal text-muted-foreground">
-                    {user.email}
+                    {usuario.email}
                   </span>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                {user.role === 'admin' && (
+                {usuario.perfil === 'administrador' && (
                   <DropdownMenuItem render={<Link href="/admin" />}>
                     <LayoutDashboard className="size-4" />
                     Painel Admin
                   </DropdownMenuItem>
                 )}
-                <DropdownMenuItem onClick={logout}>
+                <DropdownMenuItem onClick={sair}>
                   <LogOut className="size-4" />
                   Sair
                 </DropdownMenuItem>
@@ -91,7 +91,7 @@ export function SiteHeader() {
             </DropdownMenu>
           ) : (
             <Button
-              render={<Link href="/login" />}
+              render={<Link href="/auth/login" />}
               variant="ghost"
               size="sm"
               className="hidden sm:inline-flex"
@@ -130,9 +130,9 @@ export function SiteHeader() {
                     {link.label}
                   </Link>
                 ))}
-                {!user && (
+                {!usuario && (
                   <Link
-                    href="/login"
+                    href="/auth/login"
                     onClick={() => setMobileOpen(false)}
                     className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
                   >

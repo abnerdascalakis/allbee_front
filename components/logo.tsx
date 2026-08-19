@@ -24,8 +24,8 @@ export function Logo({ className }: { className?: string }) {
         </svg>
       </span>
       <span className="text-lg font-semibold leading-none tracking-tight">
-        Colmeia
-        <span className="text-primary"> Dourada</span>
+        All
+        <span className="text-primary"> bee</span>
       </span>
     </Link>
   )
