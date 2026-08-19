@@ -1,5 +1,7 @@
-import "./globals.css";
-import { Navbar } from "../components/navbar";
+import './globals.css'
+import { AuthProvider } from '@/components/auth/auth-provider'
+import { CartProvider } from '@/components/cart/cart-provider'
+import { Toaster } from '@/components/ui/sonner'
 
 export default function RootLayout({
   children,
@@ -7,11 +9,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col">
-        <Navbar />
-        {children}
+    <html lang="pt-BR" className="h-full antialiased">
+      <body className="flex min-h-full flex-col">
+        <AuthProvider>
+          <CartProvider>{children}</CartProvider>
+        </AuthProvider>
+        <Toaster />
       </body>
     </html>
-  );
+  )
 }
