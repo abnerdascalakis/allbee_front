@@ -34,3 +34,16 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Backend Rails
+
+Execute o Rails na porta 3000 e o front com `npm run dev` na porta 3001.
+Abra http://localhost:3001. O servidor Next consulta `/api/v1/produtos`,
+`/api/v1/produtos/:id` e `/api/v1/categorias` sem cache.
+Para outro endereço, configure `API_URL=http://localhost:3000/api/v1`
+em `.env.local` e reinicie o Next.
+
+Os campos seguem o JSON do Rails: `descricao`, `categoria_id`, IDs numéricos
+ e `preco` em texto (convertido apenas para exibição e cálculo).
+As categorias usam `id` e `nome`. Como a API não fornece imagens nem destaque,
+a loja usa uma imagem neutra e exibe os primeiros quatro produtos na home.

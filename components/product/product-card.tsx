@@ -8,27 +8,27 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useCart } from '@/components/cart/cart-provider'
 import { formatCurrency } from '@/lib/format'
-import { ROTULOS_CATEGORIAS, type Produto } from '@/lib/types'
+import { type Categoria, type Produto } from '@/lib/types'
 
-export function ProductCard({ produto }: { produto: Produto }) {
+export function ProductCard({ produto, categoria }: { produto: Produto; categoria?: Categoria }) {
   const { adicionarItem } = useCart()
   const semEstoque = produto.estoque <= 0
 
   return (
     <div className="group flex flex-col overflow-hidden rounded-2xl border bg-card transition-shadow hover:shadow-lg">
       <Link
-        href={`/produtos/${produto.slug}`}
+        href={`/produtos/${produto.id}`}
         className="relative aspect-square overflow-hidden bg-secondary"
       >
         <Image
-          src={produto.imagem || '/placeholder.svg'}
+          src={'/placeholder.svg'}
           alt={produto.nome}
           fill
           sizes="(max-width: 768px) 50vw, 25vw"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <Badge className="absolute left-3 top-3 bg-background/80 text-foreground backdrop-blur">
-          {ROTULOS_CATEGORIAS[produto.categoria]}
+          {categoria?.nome || 'Sem categoria'}
         </Badge>
         {semEstoque && (
           <div className="absolute inset-0 grid place-items-center bg-background/60">
@@ -38,13 +38,13 @@ export function ProductCard({ produto }: { produto: Produto }) {
       </Link>
 
       <div className="flex flex-1 flex-col p-4">
-        <Link href={`/produtos/${produto.slug}`}>
+        <Link href={`/produtos/${produto.id}`}>
           <h3 className="font-serif text-lg font-semibold leading-tight hover:text-primary">
             {produto.nome}
           </h3>
         </Link>
         <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
-          {produto.descricaoCurta}
+          {produto.descricao}
         </p>
         <div className="mt-4 flex items-center justify-between gap-2">
           <span className="font-serif text-xl font-semibold">
