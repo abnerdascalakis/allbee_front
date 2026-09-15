@@ -1,3 +1,5 @@
+import { AuthPage } from '@/components/auth/auth-page'
+
 export default function CadastroPage() {
-  return <h1 className="font-serif text-3xl font-semibold">Criar conta</h1>
+  return <AuthPage modo="cadastro" />
 }
