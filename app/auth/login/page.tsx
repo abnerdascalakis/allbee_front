@@ -1,5 +1,6 @@
 import { AuthPage } from '@/components/auth/auth-page'
 
-export default function LoginPage() {
-  return <AuthPage modo="login" />
+export default async function Page({ searchParams }: { searchParams: Promise<{ next?: string }> }) {
+  const { next } = await searchParams
+  return <AuthPage modo="login" destino={next === '/checkout' ? '/checkout' : undefined} />
 }

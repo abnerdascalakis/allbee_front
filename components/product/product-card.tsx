@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ShoppingBag } from 'lucide-react'
-import { toast } from 'sonner'
+import { mostrarAvisoCarrinho } from '@/components/cart/cart-toast'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useCart } from '@/components/cart/cart-provider'
@@ -11,7 +11,7 @@ import { formatCurrency } from '@/lib/format'
 import { type Categoria, type Produto } from '@/lib/types'
 
 export function ProductCard({ produto, categoria }: { produto: Produto; categoria?: Categoria }) {
-  const { adicionarItem } = useCart()
+  const { adicionarItem, carregado } = useCart()
   const semEstoque = produto.estoque <= 0
 
   return (
@@ -52,12 +52,10 @@ export function ProductCard({ produto, categoria }: { produto: Produto; categori
           </span>
           <Button
             size="sm"
-            disabled={semEstoque}
+            disabled={semEstoque || !carregado}
             onClick={() => {
               adicionarItem(produto)
-              toast.success('Adicionado ao carrinho', {
-                description: produto.nome,
-              })
+              mostrarAvisoCarrinho(produto.nome)
             }}
           >
             <ShoppingBag className="size-4" />
