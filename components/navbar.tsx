@@ -17,6 +17,7 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -70,28 +71,31 @@ export function SiteHeader() {
                 <User className="size-5" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel className="flex flex-col">
-                  <span>{usuario.nome}</span>
-                  <span className="text-xs font-normal text-muted-foreground">
-                    {usuario.email}
-                  </span>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {usuario.perfil === 'administrador' && (
-                  <DropdownMenuItem render={<Link href="/admin" />}>
-                    <LayoutDashboard className="size-4" />
-                    Painel Admin
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel className="flex flex-col">
+                    <span>{usuario.nome}</span>
+                    <span className="text-xs font-normal text-muted-foreground">
+                      {usuario.email}
+                    </span>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {usuario.role === 'admin' && (
+                    <DropdownMenuItem render={<Link href="/admin" />} nativeButton={false}>
+                      <LayoutDashboard className="size-4" />
+                      Painel Admin
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuItem onClick={sair}>
+                    <LogOut className="size-4" />
+                    Sair
                   </DropdownMenuItem>
-                )}
-                <DropdownMenuItem onClick={sair}>
-                  <LogOut className="size-4" />
-                  Sair
-                </DropdownMenuItem>
+                </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
             <Button
               render={<Link href="/auth/login" />}
+              nativeButton={false}
               variant="ghost"
               size="sm"
               className="hidden sm:inline-flex"

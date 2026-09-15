@@ -1,12 +1,8 @@
 'use client'
 
-import { createContext, useContext, useState, type ReactNode } from 'react'
-
-interface Usuario {
-  nome: string
-  email: string
-  perfil: 'cliente' | 'administrador'
-}
+import { createContext, useContext, type ReactNode } from 'react'
+import { encerrarSessao } from '@/app/auth/actions'
+import type { Usuario } from '@/lib/types'
 
 interface AuthContextValue {
   usuario: Usuario | null
@@ -15,11 +11,9 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null)
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [usuario, setUsuario] = useState<Usuario | null>(null)
-
+export function AuthProvider({ children, usuario }: { children: ReactNode; usuario: Usuario | null }) {
   return (
-    <AuthContext.Provider value={{ usuario, sair: () => setUsuario(null) }}>
+    <AuthContext.Provider value={{ usuario, sair: encerrarSessao }}>
       {children}
     </AuthContext.Provider>
   )
