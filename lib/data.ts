@@ -1,62 +1,28 @@
-import type { Produto } from './types'
+import { notFound } from 'next/navigation'
+import type { Categoria, Produto } from './types'
 
-export const produtos: Produto[] = [
-  {
-    id: '1',
-    nome: 'Mel Silvestre',
-    slug: 'mel-silvestre',
-    descricaoCurta: 'Mel cru de florada silvestre, puro e artesanal.',
-    preco: 39.9,
-    estoque: 20,
-    categoria: 'mel',
-    imagem: '/images/produto-mel-silvestre.png',
-    destaque: true,
-  },
-  {
-    id: '2',
-    nome: 'Favo de Mel',
-    slug: 'favo-de-mel',
-    descricaoCurta: 'Favo natural preservado diretamente da colmeia.',
-    preco: 49.9,
-    estoque: 12,
-    categoria: 'favo',
-    imagem: '/images/produto-favo.png',
-    destaque: true,
-  },
-  {
-    id: '3',
-    nome: 'Extrato de Própolis',
-    slug: 'extrato-de-propolis',
-    descricaoCurta: 'Extrato artesanal concentrado de própolis.',
-    preco: 29.9,
-    estoque: 30,
-    categoria: 'propolis',
-    imagem: '/images/produto-propolis.png',
-    destaque: true,
-  },
-  {
-    id: '4',
-    nome: 'Geleia Real',
-    slug: 'geleia-real',
-    descricaoCurta: 'Geleia real fresca, cuidadosamente selecionada.',
-    preco: 59.9,
-    estoque: 8,
-    categoria: 'geleia-real',
-    imagem: '/images/produto-geleia-real.png',
-    destaque: true,
-  },
-  {
-    id: '5',
-    nome: 'Vela de Cera de Abelha',
-    slug: 'vela-de-cera-de-abelha',
-    descricaoCurta: 'Vela artesanal feita com cera pura de abelha.',
-    preco: 24.9,
-    estoque: 16,
-    categoria: 'velas',
-    imagem: '/images/produto-vela-cera.png',
-  },
-]
+const apiUrl = process.env.API_URL || 'http://localhost:3000/api/v1'
 
-export function obterProdutosEmDestaque() {
-  return produtos.filter((produto) => produto.destaque)
+async function consultar<T>(rota: string): Promise<T> {
+  const resposta = await fetch(`${apiUrl.replace(/\/$/, '')}/${rota}`, {
+    cache: 'no-store',
+    signal: AbortSignal.timeout(10000),
+  })
+  if (resposta.status === 404 && rota.startsWith('produtos/')) notFound()
+  if (!resposta.ok) {
+    throw new Error(`Falha ao consultar ${rota}: HTTP ${resposta.status}`)
+  }
+  return resposta.json()
+}
+
+export function obterProdutos() {
+  return consultar<Produto[]>('produtos')
+}
+
+export function obterCategorias() {
+  return consultar<Categoria[]>('categorias')
+}
+
+export function obterProduto(id: string) {
+  return consultar<Produto>(`produtos/${encodeURIComponent(id)}`)
 }

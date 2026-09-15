@@ -5,36 +5,33 @@ import { Search } from 'lucide-react'
 import { ProductCard } from './product-card'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
-import { ROTULOS_CATEGORIAS, type Categoria, type Produto } from '@/lib/types'
+import { type Categoria, type Produto } from '@/lib/types'
 
-type Filtro = Categoria | 'todos'
-
-const filtros: { key: Filtro; label: string }[] = [
-  { key: 'todos', label: 'Todos' },
-  { key: 'mel', label: ROTULOS_CATEGORIAS.mel },
-  { key: 'favo', label: ROTULOS_CATEGORIAS.favo },
-  { key: 'propolis', label: ROTULOS_CATEGORIAS.propolis },
-  { key: 'geleia-real', label: ROTULOS_CATEGORIAS['geleia-real'] },
-  { key: 'velas', label: ROTULOS_CATEGORIAS.velas },
-]
+type Filtro = number | 'todos'
 
 export function ProductCatalog({
   produtos,
+  categorias,
   categoriaInicial = 'todos',
 }: {
   produtos: Produto[]
+  categorias: Categoria[]
   categoriaInicial?: Filtro
 }) {
+  const filtros: { key: Filtro; label: string }[] = [
+    { key: 'todos', label: 'Todos' },
+    ...categorias.map((categoria) => ({ key: categoria.id, label: categoria.nome })),
+  ]
   const [ativo, setAtivo] = useState<Filtro>(categoriaInicial)
   const [query, setQuery] = useState('')
 
   const filtrados = useMemo(() => {
     return produtos.filter((produto) => {
-      const correspondeCategoria = ativo === 'todos' || produto.categoria === ativo
+      const correspondeCategoria = ativo === 'todos' || produto.categoria_id === ativo
       const correspondeBusca =
         query.trim() === '' ||
         produto.nome.toLowerCase().includes(query.toLowerCase()) ||
-        produto.descricaoCurta.toLowerCase().includes(query.toLowerCase())
+        (produto.descricao || '').toLowerCase().includes(query.toLowerCase())
       return correspondeCategoria && correspondeBusca
     })
   }, [produtos, ativo, query])
@@ -77,7 +74,7 @@ export function ProductCatalog({
       ) : (
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {filtrados.map((produto) => (
-            <ProductCard key={produto.id} produto={produto} />
+            <ProductCard key={produto.id} produto={produto} categoria={categorias.find((categoria) => categoria.id === produto.categoria_id)} />
           ))}
         </div>
       )}

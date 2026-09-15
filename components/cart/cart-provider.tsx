@@ -12,8 +12,8 @@ import type { ItemCarrinho, Produto } from '@/lib/types'
 interface CartContextValue {
   itens: ItemCarrinho[]
   adicionarItem: (produto: Produto, quantidade?: number) => void
-  removerItem: (produtoId: string) => void
-  atualizarQuantidade: (produtoId: string, quantidade: number) => void
+  removerItem: (produtoId: number) => void
+  atualizarQuantidade: (produtoId: number, quantidade: number) => void
   limpar: () => void
   totalItens: number
   precoTotal: number
@@ -38,11 +38,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
     })
   }
 
-  function removerItem(produtoId: string) {
+  function removerItem(produtoId: number) {
     setItens((anteriores) => anteriores.filter((item) => item.produto.id !== produtoId))
   }
 
-  function atualizarQuantidade(produtoId: string, quantidade: number) {
+  function atualizarQuantidade(produtoId: number, quantidade: number) {
     setItens((anteriores) =>
       anteriores
         .map((item) =>
@@ -63,7 +63,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     [itens],
   )
   const precoTotal = useMemo(
-    () => itens.reduce((soma, item) => soma + item.quantidade * item.produto.preco, 0),
+    () => itens.reduce((soma, item) => soma + item.quantidade * Number(item.produto.preco), 0),
     [itens],
   )
 

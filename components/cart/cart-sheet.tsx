@@ -64,7 +64,7 @@ export function CartSheet() {
                 <div key={item.produto.id} className="flex gap-3">
                   <div className="relative size-20 shrink-0 overflow-hidden rounded-lg bg-secondary">
                     <Image
-                      src={item.produto.imagem || '/placeholder.svg'}
+                      src={'/placeholder.svg'}
                       alt={item.produto.nome}
                       fill
                       sizes="80px"
@@ -113,7 +113,7 @@ export function CartSheet() {
                         </button>
                       </div>
                       <span className="ml-auto text-sm font-semibold">
-                        {formatCurrency(item.produto.preco * item.quantidade)}
+                        {formatCurrency(Number(item.produto.preco) * item.quantidade)}
                       </span>
                     </div>
                   </div>

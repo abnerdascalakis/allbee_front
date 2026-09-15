@@ -5,8 +5,7 @@ import { Hero } from '@/components/home/hero'
 import { Reveal } from '@/components/motion/reveal'
 import { ProductCard } from '@/components/product/product-card'
 import { Button } from '@/components/ui/button'
-import { obterProdutosEmDestaque } from '@/lib/data'
-import { ROTULOS_CATEGORIAS, type Categoria } from '@/lib/types'
+import { obterProdutos, obterCategorias } from '@/lib/data'
 
 const values = [
   {
@@ -31,16 +30,9 @@ const values = [
   },
 ]
 
-const categorias: { chave: Categoria; imagem: string }[] = [
-  { chave: 'mel', imagem: '/images/produto-mel-silvestre.png' },
-  { chave: 'favo', imagem: '/images/produto-favo.png' },
-  { chave: 'propolis', imagem: '/images/produto-propolis.png' },
-  { chave: 'geleia-real', imagem: '/images/produto-geleia-real.png' },
-  { chave: 'velas', imagem: '/images/produto-vela-cera.png' },
-]
-
-export default function HomePage() {
-  const produtosEmDestaque = obterProdutosEmDestaque()
+export default async function HomePage() {
+  const [produtos, categorias] = await Promise.all([obterProdutos(), obterCategorias()])
+  const produtosEmDestaque = produtos.slice(0, 4)
 
   return (
     <>
@@ -85,10 +77,11 @@ export default function HomePage() {
             <ArrowRight className="size-4" />
           </Button>
         </Reveal>
+        {produtosEmDestaque.length === 0 && <p>Nenhum produto disponível no momento.</p>}
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {produtosEmDestaque.map((produto, i) => (
             <Reveal key={produto.id} delay={i * 0.06}>
-              <ProductCard produto={produto} />
+              <ProductCard produto={produto} categoria={categorias.find((categoria) => categoria.id === produto.categoria_id)} />
             </Reveal>
           ))}
         </div>
@@ -103,21 +96,21 @@ export default function HomePage() {
         </Reveal>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
           {categorias.map((categoria, i) => (
-            <Reveal key={categoria.chave} delay={i * 0.06}>
+            <Reveal key={categoria.id} delay={i * 0.06}>
               <Link
-                href={`/produtos?categoria=${categoria.chave}`}
+                href={`/produtos?categoria=${categoria.id}`}
                 className="group relative flex aspect-square flex-col justify-end overflow-hidden rounded-2xl border"
               >
                 <Image
-                  src={categoria.imagem || '/placeholder.svg'}
-                  alt={ROTULOS_CATEGORIAS[categoria.chave]}
+                  src={'/placeholder.svg'}
+                  alt={categoria.nome}
                   fill
                   sizes="(max-width: 768px) 50vw, 20vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/85 to-transparent" />
                 <span className="relative p-4 font-serif text-lg font-semibold">
-                  {ROTULOS_CATEGORIAS[categoria.chave]}
+                  {categoria.nome}
                 </span>
               </Link>
             </Reveal>

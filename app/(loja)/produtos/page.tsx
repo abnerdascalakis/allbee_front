@@ -1,14 +1,5 @@
 import { ProductCatalog } from '@/components/product/product-catalog'
-import { produtos } from '@/lib/data'
-import type { Categoria } from '@/lib/types'
-
-const categoriasValidas: Categoria[] = [
-  'mel',
-  'favo',
-  'propolis',
-  'geleia-real',
-  'velas',
-]
+import { obterProdutos, obterCategorias } from '@/lib/data'
 
 export default async function ProdutosPage({
   searchParams,
@@ -16,10 +7,8 @@ export default async function ProdutosPage({
   searchParams: Promise<{ categoria?: string }>
 }) {
   const { categoria } = await searchParams
-  const categoriaInicial =
-    categoria && categoriasValidas.includes(categoria as Categoria)
-      ? (categoria as Categoria)
-      : 'todos'
+  const [produtos, categorias] = await Promise.all([obterProdutos(), obterCategorias()])
+  const categoriaInicial = categorias.find((item) => String(item.id) === categoria)?.id ?? 'todos'
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
@@ -34,7 +23,7 @@ export default async function ProdutosPage({
         </p>
       </header>
 
-      <ProductCatalog produtos={produtos} categoriaInicial={categoriaInicial} />
+      <ProductCatalog key={categoriaInicial} categorias={categorias} produtos={produtos} categoriaInicial={categoriaInicial} />
     </div>
   )
 }
