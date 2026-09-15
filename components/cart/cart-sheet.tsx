@@ -130,7 +130,7 @@ export function CartSheet() {
                 </span>
               </div>
               <Button
-                render={<Link href="/carrinho" />}
+                render={<Link href="/checkout" />}
                 size="lg"
                 onClick={() => setOpen(false)}
               >

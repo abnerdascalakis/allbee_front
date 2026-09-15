@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
-export function AuthForm({ modo }: { modo: 'login' | 'cadastro' }) {
+export function AuthForm({ modo, destino }: { modo: 'login' | 'cadastro'; destino?: string }) {
   const criando = modo === 'cadastro'
   const [estado, action, pendente] = useActionState(autenticar.bind(null, modo), { erro: '' })
   const campos = [
@@ -19,6 +19,7 @@ export function AuthForm({ modo }: { modo: 'login' | 'cadastro' }) {
 
   return (
     <form action={action} className="mt-8 space-y-5" aria-busy={pendente}>
+      <input type="hidden" name="next" value={destino ?? ""} />
       <fieldset disabled={pendente} className="space-y-5">
         {campos.map(({ name, label, icon: Icon, ...props }) => (
           <div key={name} className="space-y-2">

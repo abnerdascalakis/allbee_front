@@ -5,7 +5,7 @@ import { ArrowLeft, Check } from 'lucide-react'
 import { Logo } from '@/components/logo'
 import { AuthForm } from '@/components/auth/auth-form'
 
-export function AuthPage({ modo }: { modo: 'login' | 'cadastro' }) {
+export function AuthPage({ modo, destino }: { modo: 'login' | 'cadastro'; destino?: string }) {
   const criando = modo === 'cadastro'
   return (
     <div className="grid min-h-screen lg:grid-cols-[1.05fr_0.95fr]">
@@ -79,11 +79,11 @@ export function AuthPage({ modo }: { modo: 'login' | 'cadastro' }) {
             </p>
           </div>
 
-          <AuthForm modo={modo} />
+          <AuthForm modo={modo} destino={destino} />
 
           <p className="mt-8 text-center text-sm text-muted-foreground">
             {criando ? 'Já tem uma conta?' : 'Ainda não tem uma conta?'}{' '}
-            <Link href={criando ? '/auth/login' : '/auth/cadastro'} className="font-semibold text-primary hover:underline">
+            <Link href={`${criando ? '/auth/login' : '/auth/cadastro'}${destino ? '?next=/checkout' : ''}`} className="font-semibold text-primary hover:underline">
               {criando ? 'Entrar' : 'Criar conta'}
             </Link>
           </p>

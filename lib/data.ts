@@ -85,3 +85,11 @@ export function cadastro(dados: DadosCadastro) {
     }),
   })
 }
+
+export function criarPedido(token: string, dados: import('./checkout').DadosPedido) {
+  return consultar<import('./checkout').PedidoCriado>('pedidos', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ pedido: { ...dados.entrega, itens: dados.itens } }),
+  })
+}

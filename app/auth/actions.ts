@@ -44,6 +44,7 @@ export async function autenticar(
     path: '/',
     ...(lembrar ? { maxAge: 6 * 60 * 60 } : {}),
   })
+  if (form.get('next') === '/checkout') redirect('/checkout')
   redirect(resposta.usuario.role === 'admin' ? '/admin' : '/')
 }
 
