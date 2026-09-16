@@ -11,7 +11,7 @@ const values = [
   {
     icon: Leaf,
     title: '100% natural',
-    text: 'Mel cru, sem aditivos, conservantes ou aquecimento que destrói nutrientes.',
+    text: 'Mel sem aditivos, conservantes ou aquecimento que destrói nutrientes.',
   },
   {
     icon: Sprout,
@@ -25,7 +25,7 @@ const values = [
   },
   {
     icon: Truck,
-    title: 'Entrega para todo o Brasil',
+    title: 'Entrega rapida e segura',
     text: 'Embalagem segura para o mel chegar perfeito na sua casa.',
   },
 ]

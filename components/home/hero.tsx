@@ -58,7 +58,7 @@ export function Hero() {
           transition={{ duration: 2, ease: 'easeInOut', repeat: Infinity }}
         >
           <Image
-            src="/images/abelha.png"
+            src="/images/abellhamotion.png"
             alt=""
             aria-hidden="true"
             width={110}

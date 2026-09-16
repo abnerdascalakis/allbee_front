@@ -33,8 +33,7 @@ export function AuthPage({ modo, destino }: { modo: 'login' | 'cadastro'; destin
             Da nossa colmeia para a sua mesa.
           </h2>
           <p className="mt-4 max-w-lg text-pretty leading-relaxed text-white/75">
-            Entre para acompanhar seus pedidos e descobrir produtos feitos com
-            cuidado, respeito às abelhas e o sabor verdadeiro do campo.
+            Entre para acompanhar seus pedidos.
           </p>
         </div>
       </section>

@@ -40,27 +40,31 @@ export function SiteFooter() {
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li className="flex items-center gap-2">
               <MapPin className="size-4 shrink-0" />
-              Serra da Mantiqueira, MG
+              Porto Velho, RO
             </li>
             <li className="flex items-center gap-2">
               <Phone className="size-4 shrink-0" />
-              (35) 99999-0000
+              (69) 99999-0000
             </li>
-            <li className="flex items-center gap-2">
+            {/* <li className="flex items-center gap-2">
               <Mail className="size-4 shrink-0" />
               contato@colmeiadourada.com.br
-            </li>
-            <li className="flex items-center gap-2">
-              <Camera className="size-4 shrink-0" />
-              @colmeiadourada
-            </li>
+            </li> */}
+           <li>
+            <a
+            href="https://www.instagram.com/albertofsouza/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 hover:text-foreground"
+             ><Camera className="size-4 shrink-0" />@albertofsouza
+            </a>
+          </li>
           </ul>
         </div>
       </div>
       <div className="border-t border-border/60 py-4">
         <p className="mx-auto max-w-6xl px-4 text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Colmeia Dourada. Todos os direitos
-          reservados.
+          © {new Date().getFullYear()} AllBee
         </p>
       </div>
     </footer>

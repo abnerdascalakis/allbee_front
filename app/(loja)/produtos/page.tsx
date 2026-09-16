@@ -18,7 +18,7 @@ export default async function ProdutosPage({
         </p>
         <h1 className="mt-1 font-serif text-4xl font-semibold">Produtos</h1>
         <p className="mt-2 max-w-xl text-muted-foreground">
-          Mel e derivados colhidos artesanalmente. Escolha seus favoritos e
+          Mel e derivados. Escolha seus favoritos e
           receba em casa.
         </p>
       </header>
